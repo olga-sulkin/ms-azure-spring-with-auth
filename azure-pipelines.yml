@@ -1,0 +1,43 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+  - main
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package'
+
+  #- task: AzureSpringCloud@0
+  #  inputs:
+  #    azureSubscription: 'scSpringApps'
+  #    Action: 'Deploy'
+  #    AzureSpringCloud: 'sb-service'
+  #    AppName: 'demo-1'
+  #    DeploymentType: 'Artifacts'
+  #    UseStagingDeployment: false
+  #    DeploymentName: 'default'
+  #    Package: ./target/demo-0.0.1-SNAPSHOT.jar
+
+  - task: AzureCLI@2
+    displayName: 'Deploy demo-2 with auth'
+    name: 'deploy_demo_2_with_auth'
+    inputs:
+      azureSubscription: 'scSpringApps'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: az spring app deploy --name 'proj2-service-auth' --artifact-path ./target/spring-cloud-azure-starter-active-directory-resource-server-by-filter-1.0.0-jar-with-dependencies.jar --resource-group 'rg-TestProj-1' --service sb-service
