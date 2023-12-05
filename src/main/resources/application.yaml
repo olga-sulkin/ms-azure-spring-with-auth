@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        profile:
+          tenant-id: e714dd14-6bf0-4e1c-8c72-d21fa8786387
+        credential:
+          client-id: 2b416ebf-4f93-426d-b211-87eb71b161f1
+          client-secret: 8bJ8Q~S_hDuhadcYVyaEl95ThPe8zAZ7keZAybiE
+#        user-group:
+#          allowed-group-names: group1,group2
+#        redirect-uri-template: http://localhost:8080/
